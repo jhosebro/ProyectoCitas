@@ -7,17 +7,48 @@ import {
   View,
   TextInput,
   ScrollView,
+  Pressable,
+  Alert,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {Picker} from '@react-native-picker/picker';
 
-const Formulario = ({modalVisible}) => {
+const Formulario = ({modalVisible, setModalVisible, setCita, cita}) => {
   const [usuario, setUsuario] = useState('');
-  const [barbero, setBarbero] = useState();
+  const [barbero, setBarbero] = useState('');
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
   const [fecha, setFecha] = useState(new Date());
   const [servicio, setServicio] = useState('');
+
+  const handleCita = () => {
+    if ([usuario, barbero, email, telefono, fecha, servicio].includes('' || undefined)) {
+      Alert.alert('Error', 'Todos los campos son obligatorios', [
+        {text: 'Volver'},
+      ]);
+
+      return;
+    }
+
+    const nuevaCita = {
+      id : Date.now(),
+      usuario,
+      barbero,
+      email,
+      telefono,
+      fecha,
+      servicio,
+    };
+    setCita([...cita, nuevaCita]);
+    setModalVisible(false);
+
+    setUsuario('')
+    setBarbero(undefined)
+    setEmail('')
+    setTelefono('')
+    setFecha(new Date())
+    setServicio('')
+  };
 
   return (
     <Modal animationType="fade" visible={modalVisible}>
@@ -28,6 +59,12 @@ const Formulario = ({modalVisible}) => {
             Nueva {''}
             <Text style={styles.tituloBold}>Cita</Text>
           </Text>
+
+          <Pressable
+            style={styles.btnCancelar}
+            onLongPress={() => setModalVisible(!modalVisible)}>
+            <Text style={styles.btnCancelarTexto}>X Cancelar</Text>
+          </Pressable>
 
           <View style={styles.campo}>
             <Text style={styles.label}>Nombre del usuario</Text>
@@ -48,7 +85,7 @@ const Formulario = ({modalVisible}) => {
                 dropdownIconColor={'blue'}>
                 <Picker.Item label="Seleccione una opcion" value="" />
                 <Picker.Item label="Danny Vallejo" value="Danny Vallejo" />
-                <Picker.Item label="Barbero 2" value="Barbero 2" />
+                <Picker.Item label="Cartacho" value="Cartacho" />
                 <Picker.Item label="Barbero 3" value="Barbero 3" />
               </Picker>
             </View>
@@ -85,7 +122,7 @@ const Formulario = ({modalVisible}) => {
                 locale="es"
                 mode="datetime"
                 androidVariant="nativeAndroid"
-                onDateChange={(date) => setFecha(date)}
+                onDateChange={date => setFecha(date)}
               />
             </View>
           </View>
@@ -93,7 +130,7 @@ const Formulario = ({modalVisible}) => {
           <View style={styles.campo}>
             <Text style={styles.label}>Servicio</Text>
             <TextInput
-              style={[styles.input, styles.sintomasInput]}
+              style={[styles.input, styles.servicioInput]}
               placeholder="Describa el o los servicios que desea adquirir"
               placeholderTextColor={'#666'}
               keyboardType={''}
@@ -102,6 +139,10 @@ const Formulario = ({modalVisible}) => {
               multiline={true}
               numberOfLines={4}></TextInput>
           </View>
+
+          <Pressable style={styles.btnNuevaCita} onPress={handleCita}>
+            <Text style={styles.btnNuevaCitaTexto}>Agregar cita</Text>
+          </Pressable>
         </ScrollView>
       </SafeAreaView>
     </Modal>
@@ -123,6 +164,20 @@ const styles = StyleSheet.create({
   tituloBold: {
     fontWeight: '900',
   },
+  btnCancelar: {
+    marginVertical: 30,
+    backgroundColor: '#003cad',
+    marginHorizontal: 30,
+    padding: 20,
+    borderRadius: 20,
+  },
+  btnCancelarTexto: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: '900',
+    fontSize: 16,
+    textTransform: 'uppercase',
+  },
   campo: {
     marginTop: 10,
     marginHorizontal: 30,
@@ -140,12 +195,28 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 20,
   },
-  sintomasInput: {
+  servicioInput: {
     height: 100,
+    textAlign: 'left',
+    textAlignVertical: 'top',
   },
   fecha: {
     backgroundColor: 'white',
     borderRadius: 20,
+  },
+  btnNuevaCita: {
+    marginVertical: 50,
+    backgroundColor: '#fdc100',
+    paddingVertical: 15,
+    marginHorizontal: 30,
+    borderRadius: 20,
+  },
+  btnNuevaCitaTexto: {
+    textAlign: 'center',
+    color: 'white',
+    textTransform: 'uppercase',
+    fontWeight: '900',
+    fontSize: 16,
   },
 });
 

@@ -7,11 +7,19 @@
  */
 
 import React, {useState} from 'react';
-import {SafeAreaView, Text, StyleSheet, Pressable} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  Pressable,
+  FlatList,
+} from 'react-native';
 import Formulario from './src/components/Formulario';
+import Usuario from './src/components/Usuario';
 
 const App = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [cita, setCita] = useState([]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -26,7 +34,27 @@ const App = () => {
         <Text style={styles.btnTextoNuevaCita}>Nueva Cita</Text>
       </Pressable>
 
-      <Formulario modalVisible={modalVisible}></Formulario>
+      {cita.length === 0 ? (
+        <Text style={styles.noHayCitas}>No hay citas</Text>
+      ) : (
+        <FlatList
+          data={cita}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => {
+            return (
+              <Usuario
+                item={item}
+                >
+
+              </Usuario>)
+          }}></FlatList>
+      )}
+
+      <Formulario
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        cita={cita}
+        setCita={setCita}></Formulario>
     </SafeAreaView>
   );
 };
@@ -58,6 +86,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '900',
     textTransform: 'uppercase',
+  },
+  noHayCitas: {
+    marginTop: 40,
+    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: '600',
+    color: 'black',
   },
 });
 export default App;
