@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Modal,
   SafeAreaView,
@@ -13,7 +13,7 @@ import {
 import DatePicker from 'react-native-date-picker';
 import {Picker} from '@react-native-picker/picker';
 
-const Formulario = ({modalVisible, setModalVisible, setCita, cita}) => {
+const Formulario = ({modalVisible, setModalVisible, setUsuarios, usuarios}) => {
   const [usuario, setUsuario] = useState('');
   const [barbero, setBarbero] = useState('');
   const [email, setEmail] = useState('');
@@ -21,8 +21,13 @@ const Formulario = ({modalVisible, setModalVisible, setCita, cita}) => {
   const [fecha, setFecha] = useState(new Date());
   const [servicio, setServicio] = useState('');
 
+
   const handleCita = () => {
-    if ([usuario, barbero, email, telefono, fecha, servicio].includes('' || undefined)) {
+    if (
+      [usuario, barbero, email, telefono, fecha, servicio].includes(
+        '' || undefined,
+      )
+    ) {
       Alert.alert('Error', 'Todos los campos son obligatorios', [
         {text: 'Volver'},
       ]);
@@ -31,7 +36,7 @@ const Formulario = ({modalVisible, setModalVisible, setCita, cita}) => {
     }
 
     const nuevaCita = {
-      id : Date.now(),
+      id: Date.now(),
       usuario,
       barbero,
       email,
@@ -39,15 +44,15 @@ const Formulario = ({modalVisible, setModalVisible, setCita, cita}) => {
       fecha,
       servicio,
     };
-    setCita([...cita, nuevaCita]);
+    setUsuarios([...usuarios, nuevaCita]);
     setModalVisible(false);
 
-    setUsuario('')
-    setBarbero(undefined)
-    setEmail('')
-    setTelefono('')
-    setFecha(new Date())
-    setServicio('')
+    setUsuario('');
+    setBarbero(undefined);
+    setEmail('');
+    setTelefono('');
+    setFecha(new Date());
+    setServicio('');
   };
 
   return (

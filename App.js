@@ -19,7 +19,15 @@ import Usuario from './src/components/Usuario';
 
 const App = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [cita, setCita] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
+  const [usuario, setUsuario] = useState({});
+
+  const usuarioEditar = id => {
+    const usuarioEditar = usuarios.filter(usuario => usuario.id == id)
+
+    console.log(usuarioEditar);
+  }
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -34,34 +42,37 @@ const App = () => {
         <Text style={styles.btnTextoNuevaCita}>Nueva Cita</Text>
       </Pressable>
 
-      {cita.length === 0 ? (
+      {usuarios.length === 0 ? (
         <Text style={styles.noHayCitas}>No hay citas</Text>
       ) : (
         <FlatList
-          data={cita}
+          style={styles.listadoCitas}
+          data={usuarios}
           keyExtractor={item => item.id}
           renderItem={({item}) => {
             return (
               <Usuario
                 item={item}
-                >
-
-              </Usuario>)
+                setModalVisible={setModalVisible}
+                usuarioEditar={usuarioEditar}
+                ></Usuario>
+            );
           }}></FlatList>
       )}
 
       <Formulario
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        cita={cita}
-        setCita={setCita}></Formulario>
+        usuarios={usuarios}
+        setUsuarios={setUsuarios}
+        ></Formulario>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#F0F1F4',
     flex: 1,
   },
   titulo: {
@@ -93,6 +104,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
     color: 'black',
+  },
+  listadoCitas: {
+    marginTop: 50,
+    marginHorizontal: 30,
   },
 });
 export default App;
