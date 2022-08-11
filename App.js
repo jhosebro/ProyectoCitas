@@ -25,7 +25,7 @@ const App = () => {
   const usuarioEditar = id => {
     const usuarioEditar = usuarios.filter(usuario => usuario.id == id)
 
-    console.log(usuarioEditar);
+    setUsuario(usuarioEditar[0]);
   }
 
 
@@ -65,6 +65,7 @@ const App = () => {
         setModalVisible={setModalVisible}
         usuarios={usuarios}
         setUsuarios={setUsuarios}
+        usuario={usuario}
         ></Formulario>
     </SafeAreaView>
   );

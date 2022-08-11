@@ -13,14 +13,26 @@ import {
 import DatePicker from 'react-native-date-picker';
 import {Picker} from '@react-native-picker/picker';
 
-const Formulario = ({modalVisible, setModalVisible, setUsuarios, usuarios}) => {
+const Formulario = ({modalVisible, setModalVisible, setUsuarios, usuarios, usuario: usuarioObj}) => {
   const [usuario, setUsuario] = useState('');
+  const [id, setId] = useState('');
   const [barbero, setBarbero] = useState('');
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
   const [fecha, setFecha] = useState(new Date());
   const [servicio, setServicio] = useState('');
 
+  useEffect(() => {
+    if(Object.keys(usuarioObj).length > 0){
+      setUsuario(usuarioObj.usuario)
+      setId(usuarioObj.id)
+      setBarbero(usuarioObj.barbero)
+      setEmail(usuarioObj.email)
+      setTelefono(usuarioObj.telefono)
+      setFecha(usuarioObj.fecha)
+      setServicio(usuarioObj.servicio)
+    }
+  },[])
 
   const handleCita = () => {
     if (
